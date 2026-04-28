@@ -77,6 +77,12 @@ func (r resourceTeleportApp) Create(ctx context.Context, req tfsdk.CreateResourc
 	
 	appResource := app
 
+	if appResource.Metadata.Labels == nil {
+		appResource.Metadata.Labels = map[string]string{}
+	}
+	if _, ok := appResource.Metadata.Labels["teleport.dev/origin"]; !ok {
+		appResource.Metadata.Labels["teleport.dev/origin"] = "terraform"
+	}
 	err = appResource.CheckAndSetDefaults()
 	if err != nil {
 		resp.Diagnostics.Append(diagFromWrappedErr("Error setting App defaults", trace.Wrap(err), "app"))
@@ -228,6 +234,12 @@ func (r resourceTeleportApp) Update(ctx context.Context, req tfsdk.UpdateResourc
 	}
 	appResource := app
 
+	if appResource.Metadata.Labels == nil {
+		appResource.Metadata.Labels = map[string]string{}
+	}
+	if _, ok := appResource.Metadata.Labels["teleport.dev/origin"]; !ok {
+		appResource.Metadata.Labels["teleport.dev/origin"] = "terraform"
+	}
 
 	if err := appResource.CheckAndSetDefaults(); err != nil {
 		resp.Diagnostics.Append(diagFromWrappedErr("Error updating App", err, "app"))

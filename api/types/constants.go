@@ -864,6 +864,10 @@ const (
 	// from the Entra ID directory.
 	OriginEntraID = common.OriginEntraID
 
+	// OriginTerraform is an origin value indicating that the resource was
+	// created from the Terraform provider.
+	OriginTerraform = common.OriginTerraform
+
 	// IntegrationLabel is a resource metadata label name used to identify the integration name that created the resource.
 	IntegrationLabel = TeleportNamespace + "/integration"
 

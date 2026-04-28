@@ -142,6 +142,10 @@ type payload struct {
 	// not specify one in the resource config. The user-provided sub_kind (on
 	// the resource or in state) takes precedence; this is only a fallback.
 	DefaultSubKind string
+	// SetDefaultOriginLabel when true causes the provider to set
+	// Metadata.Labels["teleport.dev/origin"] = "terraform" if the label is
+	// not already present in the resource's configuration.
+	SetDefaultOriginLabel bool
 }
 
 // statePoll configures polling for state changes when creating or updating resources.
@@ -267,6 +271,7 @@ var (
 		HasStaticID:            false,
 		TerraformResourceType:  "teleport_app",
 		HasCheckAndSetDefaults: true,
+		SetDefaultOriginLabel:  true,
 	}
 
 	authPreference = payload{

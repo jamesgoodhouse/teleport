@@ -140,6 +140,15 @@ func (r resourceTeleport{{.Name}}) Create(ctx context.Context, req tfsdk.CreateR
 	{{.VarName}}Resource.Kind = {{.ForceSetKind}}
 {{- end}}
 
+{{- if .SetDefaultOriginLabel }}
+	if {{.VarName}}Resource.Metadata.Labels == nil {
+		{{.VarName}}Resource.Metadata.Labels = map[string]string{}
+	}
+	if _, ok := {{.VarName}}Resource.Metadata.Labels["teleport.dev/origin"]; !ok {
+		{{.VarName}}Resource.Metadata.Labels["teleport.dev/origin"] = "terraform"
+	}
+{{- end}}
+
 {{- if .HasCheckAndSetDefaults }}
 	err = {{.VarName}}Resource.CheckAndSetDefaults()
 	if err != nil {
@@ -488,6 +497,15 @@ func (r resourceTeleport{{.Name}}) Update(ctx context.Context, req tfsdk.UpdateR
 	{{- if .ForceSetKind }}
 	{{.VarName}}Resource.Kind = {{.ForceSetKind}}
 	{{- end}}
+
+{{- if .SetDefaultOriginLabel }}
+	if {{.VarName}}Resource.Metadata.Labels == nil {
+		{{.VarName}}Resource.Metadata.Labels = map[string]string{}
+	}
+	if _, ok := {{.VarName}}Resource.Metadata.Labels["teleport.dev/origin"]; !ok {
+		{{.VarName}}Resource.Metadata.Labels["teleport.dev/origin"] = "terraform"
+	}
+{{- end}}
 
 	{{if .HasCheckAndSetDefaults -}}
 	if err := {{.VarName}}Resource.CheckAndSetDefaults(); err != nil {
